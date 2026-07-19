@@ -4,7 +4,7 @@ import { after, before, test } from "node:test";
 import { spawn } from "node:child_process";
 import WebSocket from "ws";
 
-const port = 3102;
+const port = Number.parseInt(process.env.TEST_PORT ?? "3102", 10);
 const serverUrl = `ws://127.0.0.1:${port}`;
 let server;
 
@@ -88,4 +88,55 @@ test("accepts WebSocket clients and broadcasts a message to every connection", a
 
   first.client.close();
   second.client.close();
+});
+
+test("records a valid vote, returns updated poll results, and broadcasts the update", async () => {
+  const initialPollResponse = await fetch(`http://127.0.0.1:${port}/api/poll`);
+  assert.equal(initialPollResponse.status, 200);
+  const initialPoll = await initialPollResponse.json();
+  assert.equal(initialPoll.question, "What's for lunch today?");
+
+  const choice = "Pad Thai";
+  const initialChoice = initialPoll.choices.find((item) => item.name === choice);
+  assert.ok(initialChoice);
+
+  const socket = connectClient();
+  await socket.opened;
+  await socket.message;
+  const voteUpdate = once(socket.client, "message").then(([data]) =>
+    JSON.parse(data.toString()),
+  );
+
+  const voteResponse = await fetch(`http://127.0.0.1:${port}/api/vote`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ choice }),
+  });
+  assert.equal(voteResponse.status, 200);
+  const voteResult = await voteResponse.json();
+  assert.equal(voteResult.success, true);
+  assert.equal(voteResult.totalVotes, initialPoll.totalVotes + 1);
+
+  const updatedPollResponse = await fetch(`http://127.0.0.1:${port}/api/poll`);
+  assert.equal(updatedPollResponse.status, 200);
+  const updatedPoll = await updatedPollResponse.json();
+  const updatedChoice = updatedPoll.choices.find((item) => item.name === choice);
+  assert.equal(updatedPoll.totalVotes, initialPoll.totalVotes + 1);
+  assert.equal(updatedChoice.votes, initialChoice.votes + 1);
+
+  assert.deepEqual(await voteUpdate, {
+    type: "vote-update",
+    choices: updatedPoll.choices,
+    totalVotes: updatedPoll.totalVotes,
+  });
+
+  socket.client.close();
+
+  const invalidResponse = await fetch(`http://127.0.0.1:${port}/api/vote`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ choice: "not a lunch option" }),
+  });
+  assert.equal(invalidResponse.status, 400);
+  assert.deepEqual(await invalidResponse.json(), { error: "Invalid choice" });
 });

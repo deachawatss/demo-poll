@@ -3,6 +3,8 @@ import { WebSocket, WebSocketServer } from "ws";
 
 import { getVotes } from "./db";
 
+export const internalBroadcastPath = "/_internal/broadcast";
+
 let webSocketServer: WebSocketServer | undefined;
 
 export function setupWebSocket(server: HttpServer): void {
@@ -22,17 +24,28 @@ export function setupWebSocket(server: HttpServer): void {
   });
 }
 
-export function broadcast(data: object): void {
+export async function broadcast(data: object): Promise<void> {
   const socketServer = webSocketServer;
-  if (!socketServer) {
+  if (socketServer) {
+    const message = JSON.stringify(data);
+
+    for (const client of socketServer.clients) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    }
+
     return;
   }
 
-  const message = JSON.stringify(data);
+  const port = process.env.PORT ?? "3000";
+  const response = await fetch(`http://127.0.0.1:${port}${internalBroadcastPath}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-  for (const client of socketServer.clients) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
+  if (!response.ok) {
+    throw new Error("Could not broadcast vote update");
   }
 }
