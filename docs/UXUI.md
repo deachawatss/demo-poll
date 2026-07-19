@@ -34,6 +34,7 @@ flowchart LR
 | Screen | Route | Primary action | States covered | REQ-id |
 |--------|-------|----------------|----------------|--------|
 | _name_ | _/path_ | _the one job_ | loading · empty · error · ready | REQ-DEMOPOLL-001 |
+| Quick Poll | `/` | Submit one lunch choice, then follow live results. | loading · error · vote · results | REQ-DEMOPOLL-004 |
 
 ## Design Tokens
 
@@ -44,3 +45,4 @@ Canonical token source: the project root `DESIGN.md` (exported from the brand sk
 | Version | Date | REQ/CR-id | Author | Change | PR |
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
+| 0.1.1 | 2026-07-20 | REQ-DEMOPOLL-004 | Oracle (Codex) | Added the poll screen inventory row. | pending |
