@@ -24,6 +24,7 @@ source_of_truth: code
 | UAT-id | REQ-id | Scenario (Given / When / Then) | Result | Evidence |
 |--------|--------|-------------------------------|--------|----------|
 | UAT-001 | REQ-DEMOPOLL-001 | **Given** _precondition_ · **When** _action_ · **Then** _observable outcome_ | ⬜ | — |
+| UAT-002 | REQ-DEMOPOLL-002 | **Given** the production custom server is running · **When** two WebSocket clients connect and one sends a results message · **Then** each receives the initial results and the sent message. | ✅ pass | `npm test`; production WebSocket smoke test on port 3103 |
 
 Result: ✅ pass · ❌ fail · ⬜ not yet run · ⛔ blocked.
 
@@ -40,3 +41,4 @@ Result: ✅ pass · ❌ fail · ⬜ not yet run · ⛔ blocked.
 | Version | Date | REQ/CR-id | Author | Change | PR |
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
+| 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Added custom-server acceptance evidence. | pending |

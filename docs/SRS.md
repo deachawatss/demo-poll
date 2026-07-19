@@ -37,6 +37,7 @@ source_of_truth: code
 | REQ-id | Requirement (EARS) | Priority | Status | Verified by |
 |--------|--------------------|----------|--------|-------------|
 | REQ-DEMOPOLL-001 | WHEN _trigger_, the system SHALL _response_. | Must | draft | UAT-001 |
+| REQ-DEMOPOLL-002 | WHEN the application starts, the system SHALL serve Next.js HTTP requests and accept WebSocket connections on the same configured port. | Must | implemented | UAT-002 |
 
 Priority = MoSCoW (Must / Should / Could). Status = draft → approved → implemented.
 
@@ -51,3 +52,4 @@ Priority = MoSCoW (Must / Should / Could). Status = draft → approved → imple
 | Version | Date | REQ/CR-id | Author | Change | PR |
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
+| 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Added custom-server requirement. | pending |
