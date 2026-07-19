@@ -25,6 +25,7 @@ source_of_truth: code
 |--------|--------|-------------------------------|--------|----------|
 | UAT-001 | REQ-DEMOPOLL-001 | **Given** _precondition_ · **When** _action_ · **Then** _observable outcome_ | ⬜ | — |
 | UAT-002 | REQ-DEMOPOLL-002 | **Given** the production custom server is running · **When** two WebSocket clients connect and one sends a results message · **Then** each receives the initial results and the sent message. | ✅ pass | `npm test`; production WebSocket smoke test on port 3103 |
+| UAT-003 | REQ-DEMOPOLL-003 | **Given** the server and a connected WebSocket client · **When** a valid choice is posted · **Then** GET returns its incremented total and the client receives a `vote-update`; invalid choices return 400. | ⬜ | `npm run build`; live broadcast verification pending |
 
 Result: ✅ pass · ❌ fail · ⬜ not yet run · ⛔ blocked.
 
@@ -42,3 +43,4 @@ Result: ✅ pass · ❌ fail · ⬜ not yet run · ⛔ blocked.
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
 | 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Added custom-server acceptance evidence. | pending |
+| 0.1.2 | 2026-07-20 | #3 | Oracle (Codex) | Added poll API acceptance evidence. | pending |

@@ -38,6 +38,7 @@ source_of_truth: code
 |--------|--------------------|----------|--------|-------------|
 | REQ-DEMOPOLL-001 | WHEN _trigger_, the system SHALL _response_. | Must | draft | UAT-001 |
 | REQ-DEMOPOLL-002 | WHEN the application starts, the system SHALL serve Next.js HTTP requests and accept WebSocket connections on the same configured port. | Must | implemented | UAT-002 |
+| REQ-DEMOPOLL-003 | WHEN a voter submits one of the eight lunch choices, the system SHALL store the vote, return the fixed-order poll totals, and notify connected clients. | Must | implemented | UAT-003 |
 
 Priority = MoSCoW (Must / Should / Could). Status = draft → approved → implemented.
 
@@ -53,3 +54,4 @@ Priority = MoSCoW (Must / Should / Could). Status = draft → approved → imple
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
 | 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Added custom-server requirement. | pending |
+| 0.1.2 | 2026-07-20 | #3 | Oracle (Codex) | Added poll API requirement. | pending |
