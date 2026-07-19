@@ -34,9 +34,11 @@ stateDiagram-v2
 | CR-id | Date | REQ-id | Change | Reason | PR | Status |
 |-------|------|--------|--------|--------|----|--------|
 | CR-001 | 2026-07-20 | REQ-DEMOPOLL-NNN | _what changes_ | _why_ | #NN | Proposed |
+| CR-002 | 2026-07-20 | REQ-DEMOPOLL-002 | Add a custom Next.js and WebSocket server. | Provide real-time connections on the application port. | pending | Implemented |
 
 ## Revision History
 
 | Version | Date | REQ/CR-id | Author | Change | PR |
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
+| 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Recorded custom-server delivery. | pending |
