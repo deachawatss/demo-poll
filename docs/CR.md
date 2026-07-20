@@ -36,6 +36,7 @@ stateDiagram-v2
 | CR-001 | 2026-07-20 | REQ-DEMOPOLL-NNN | _what changes_ | _why_ | #NN | Proposed |
 | CR-002 | 2026-07-20 | REQ-DEMOPOLL-002 | Add a custom Next.js and WebSocket server. | Provide real-time connections on the application port. | pending | Implemented |
 | CR-003 | 2026-07-20 | REQ-DEMOPOLL-003 | Add poll and vote API routes with live result broadcasts. | Persist lunch votes and update connected voters. | pending | Implemented |
+| CR-004 | 2026-07-20 | REQ-DEMOPOLL-004 | Add responsive voting and live animated results at `/`. | Deliver issue #4. | pending | Proposed |
 
 ## Revision History
 
@@ -44,3 +45,4 @@ stateDiagram-v2
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
 | 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Recorded custom-server delivery. | pending |
 | 0.1.2 | 2026-07-20 | #3 | Oracle (Codex) | Recorded poll API delivery. | pending |
+| 0.1.3 | 2026-07-20 | CR-004 | Oracle (Codex) | Logged issue #4 UI delivery. | pending |
