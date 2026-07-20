@@ -11,8 +11,8 @@ Real-time voting application with WebSocket live updates.
 ## Functional Requirements
 | ID | Requirement | Status |
 |----|------------|--------|
-| FR-1 | Display poll question with choices | Planned |
-| FR-2 | Accept votes via POST /api/vote | Planned |
-| FR-3 | Return poll data via GET /api/poll | Planned |
-| FR-4 | Broadcast vote updates via WebSocket | Planned |
-| FR-5 | Animated bar chart for results | Planned |
+| FR-1 | Display poll question with choices | Implemented |
+| FR-2 | Accept votes via POST /api/vote | Implemented |
+| FR-3 | Return poll data via GET /api/poll | Implemented |
+| FR-4 | Broadcast vote updates via WebSocket | Implemented |
+| FR-5 | Animated bar chart for results | Implemented |
