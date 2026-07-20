@@ -21,40 +21,39 @@ source_of_truth: code
 
 ## Context
 
-_One paragraph: what this system is, who depends on it, and the one constraint that most shaped the design._
+Quick Poll is a single-process Next.js application for live lunch voting. It keeps the HTTP application and WebSocket clients on one Node.js port so every connected voter can receive results without a separate real-time service.
 
 ## Goals / Non-Goals
 
 | Goals | Non-Goals |
 |-------|-----------|
-| _what the design must achieve_ | _explicitly not solved here, and why_ |
+| Persist votes locally and broadcast current results to every connected client. | Multi-instance coordination, authentication, and durable hosted-database operations. |
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    U[User / device] --> FE[Frontend]
-    FE --> API[API service]
-    API --> DB[(Database)]
-    API --> EXT[External system]
+    U[Browser] --> S[Custom Node server]
+    S --> N[Next.js request handler]
+    S --> W[WebSocket server]
+    N --> D[(SQLite poll.db)]
+    W --> D
 ```
 
 | Component | Responsibility | Realises | Key decision |
 |-----------|----------------|----------|--------------|
-| _name_ | _single-sentence responsibility_ | REQ-DEMOPOLL-001 | [ADR-0001](adr/0001-slug.md) |
+| `server.ts` | Hosts Next.js HTTP handling and the WebSocket server on `PORT` or port 3000. | REQ-DEMOPOLL-002 | One process owns both protocols. |
+| `src/lib/db.ts` | Initializes SQLite and provides parameterized vote reads and inserts. | REQ-DEMOPOLL-003 | Keep persistence local for the demo. |
+| `src/lib/ws.ts` | Sends initial vote counts on connect and broadcasts JSON to all open clients. | REQ-DEMOPOLL-002, REQ-DEMOPOLL-003 | API routes use the loopback broadcast endpoint to preserve the server module's singleton identity. |
 
 ## Data Model
 
 ```mermaid
 erDiagram
-    ENTITY_A ||--o{ ENTITY_B : has
-    ENTITY_A {
-        int    id   PK
-        string name
-    }
-    ENTITY_B {
-        int id   PK
-        int a_id FK
+    VOTES {
+        integer id PK
+        text choice
+        datetime created_at
     }
 ```
 
@@ -62,29 +61,33 @@ erDiagram
 
 ```mermaid
 sequenceDiagram
-    actor User
-    User->>Frontend: action
-    Frontend->>API: request
-    API->>Database: query
-    Database-->>API: rows
-    API-->>Frontend: response
-    Frontend-->>User: result
+    participant Browser
+    participant Server as Custom server
+    participant DB as SQLite
+    Browser->>Server: WebSocket connection
+    Server->>DB: grouped vote counts
+    DB-->>Server: counts
+    Server-->>Browser: results JSON
+    Browser->>Server: POST vote
+    Server->>DB: insert vote
+    Server-->>Browser: vote-update JSON to all clients
 ```
 
 ## Deployment
 
 | | |
 |---|---|
-| **Target** | _where it runs (host, container, service)_ |
-| **Pipeline** | _how a merge reaches production_ |
-| **Rollback** | _how a bad release is reverted_ |
+| **Target** | Node.js process running `tsx server.ts` with a writable working directory for `poll.db`. |
+| **Pipeline** | `npm run build`, then `npm start`. |
+| **Rollback** | Redeploy the preceding application revision; `poll.db` is retained unless an operator deliberately replaces it. |
 
 ## Alternatives Considered
 
-_One line per rejected direction, each linking its ADR: what was rejected and the single deciding reason._
+Separate HTTP and WebSocket services were rejected for this demo because one custom server provides both protocols without an additional deployment boundary.
 
 ## Revision History
 
 | Version | Date | REQ/CR-id | Author | Change | PR |
 |---------|------|-----------|--------|--------|----|
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
+| 0.1.3 | 2026-07-20 | #11 | Oracle (Codex) | Documented the delivered custom-server, SQLite, and WebSocket architecture. | pending |

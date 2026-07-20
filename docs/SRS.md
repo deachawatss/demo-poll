@@ -27,10 +27,10 @@ source_of_truth: code
 
 | | |
 |---|---|
-| **Purpose** | _one sentence: the job this system does_ |
-| **Users** | _who operates it, in what setting_ |
-| **In scope** | _the core capabilities, comma-separated_ |
-| **Out of scope** | _explicitly not built, to stop scope drift_ |
+| **Purpose** | Let participants cast a lunch vote and receive live poll totals. |
+| **Users** | Voters connected to the demo poll in a browser. |
+| **In scope** | Next.js HTTP routes, SQLite vote persistence, WebSocket result updates. |
+| **Out of scope** | Authentication, multi-process broadcast coordination, and managed database hosting. |
 
 ## Functional Requirements
 
@@ -46,7 +46,7 @@ Priority = MoSCoW (Must / Should / Could). Status = draft → approved → imple
 
 | REQ-id | Quality | Measurable target | Verified by |
 |--------|---------|-------------------|-------------|
-| REQ-DEMOPOLL-N01 | Performance | _e.g. list view renders ≤ 2 s at 10k rows_ | UAT-N01 |
+| REQ-DEMOPOLL-N01 | Runtime | The application SHALL require a Node.js runtime, a writable SQLite database file, and WebSocket-capable clients. | UAT-002 |
 
 ## Revision History
 
@@ -55,3 +55,4 @@ Priority = MoSCoW (Must / Should / Could). Status = draft → approved → imple
 | 0.1.0 | 2026-07-20 | — | wind | Initial scaffold | — |
 | 0.1.1 | 2026-07-20 | #2 | Oracle (Codex) | Added custom-server requirement. | pending |
 | 0.1.2 | 2026-07-20 | #3 | Oracle (Codex) | Added poll API requirement. | pending |
+| 0.1.3 | 2026-07-20 | #11 | Oracle (Codex) | Documented runtime requirements for the delivered foundation. | pending |
