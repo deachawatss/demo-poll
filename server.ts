@@ -2,7 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 
 import next from "next";
 
-import { broadcast, internalBroadcastPath, setupWebSocket } from "./src/lib/ws";
+import { broadcastDirect, internalBroadcastPath, setupWebSocket } from "./src/lib/ws";
 
 const port = Number.parseInt(process.env.PORT ?? "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -52,7 +52,7 @@ async function handleInternalBroadcast(
   }
 
   try {
-    await broadcast(JSON.parse(body) as object);
+    broadcastDirect(JSON.parse(body) as object);
     response.writeHead(204).end();
   } catch {
     response.writeHead(400).end();
